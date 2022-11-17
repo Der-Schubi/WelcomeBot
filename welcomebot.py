@@ -5,6 +5,10 @@ import discord
 import re
 from dotenv import load_dotenv
 
+text_file = open("welcome_message.txt", "r")
+welcome_messages = text_file.read().split("[/]")
+text_file.close()
+
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
@@ -28,9 +32,9 @@ async def on_member_update(before, after):
     print(f'Role {welcome_role.name} was added to User {after.name}')
     print(f'Sending Welcome Message to {after.name}...')
     await after.create_dm()
-    await after.dm_channel.send(
-      f'Hi {after.name}!'
-    )
+    #await after.dm_channel.send(f'Hi {after.name}!')
+    for message in welcome_messages:
+      await after.dm_channel.send(message)
     print(f'Removing Role from User...\n')
     await after.remove_roles(welcome_role)
 
@@ -55,8 +59,8 @@ async def on_message(message):
         member = client.get_user(user_id)
         print(f'Sending Welcome Message to {member.name}...\n')
         await member.create_dm()
-        await member.dm_channel.send(
-          f'Hi {member.name}!'
-        )
+        #await after.dm_channel.send(f'Hi {after.name}!')
+        for message in welcome_messages:
+          await after.dm_channel.send(message)
 
 client.run(TOKEN)

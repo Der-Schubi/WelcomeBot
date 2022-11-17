@@ -1,0 +1,37 @@
+__**Hallo und herzlich willkommen auf dem Discord-Server der German Pilot Lounge!**__
+
+Bevor Du loslegst, möchten wir Dir hiermit ein paar Tipps zur Orientierung mitgeben.
+
+__**Orientierung auf dem Server**__
+[/]
+**Public**
+Unter Public dürfen alle, also auch nicht-Mitglieder der GPL lesen und schreiben, hier sollten also keine Interna der BGS oder Ähnliches diskutiert werden. Aber für allgemeines (<#359600174550482954>), lockeres und auch themenbezogenes (<#905071080463560726>) Quatschen bist Du hier richtig!
+
+**GPL Interna**
+Hier können nur Vollmitglieder der GPL lesen und schreiben.
+
+**Ontopic**
+Hier findest Du für praktisch jede spielbezogene Frage oder jedes Thema den richtigen Kanal.
+
+**BGS**
+Hier geht es rund um die Background-Simulation von Elite, solltest Du also einmal das Bedürfnis verspüren, Dich nützlich zu machen, kannst Du in <#359601688698421248> fragen, wo Du Dich austoben darfst.
+
+**PVP**
+Unser Player-vs-Player-Bereich. Hast Du Lust, die Waffen sprechen zu lassen? Dann bist Du im <#359602226429165569> richtig!
+
+**Sprachkanäle**
+Falls Du Lust auf einen netten Plausch hast, kannst Du mal in <#814267518620925963> vorbeischauen.
+Ansonsten haben wir hier Sprachkanäle für jeden Spielstil, ähnlich der Anordnung unserer Textkanäle.
+
+**Fast alle unserer Kanäle haben übrigens eine Kanalbeschreibung, wo Du das alles noch einmal nachlesen kannst!**
+
+__**Rollen abonnieren**__
+[/]
+Im Bereich Tools findest Du den Kanal <#575042754300739595>.
+Bitte abonniere dort Rollen, die Deinem Spielstil entsprechen. Dies tust Du, indem Du das Reaktions-Icon unter der genannten Rolle anklickst.
+Auf die gleiche Weise kannst Du die Rollen auch wieder ablegen.
+Diese Rollen sind dazu da, um Benutzer die sich für ein bestimmtes Thema (wie z.B. Exploration) interessieren, anpingen zu können.
+Du kannst eine Rolle genauso wie einen Benutzer anpingen, indem Du [@]Rolle schreibst (ohne die eckigen Klammern!), also z.B. [@]Exploration/ERC.
+
+Solltest Du also z.B. Fragen zu Mining haben, kannst Du entweder direkt im Kanal <#575042481830363152> fragen, oder aber in einem anderen Kanal die Rolle [@]Mining anpingen.
+Wir haben übrigens auch eine Rolle, die Du anpingen kannst, wenn Du einmal ohne Treibstoff gestrandet bist. In dem Fall kannst Du mit [@]ADAC um Hilfe bitten.
