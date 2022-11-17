@@ -19,9 +19,6 @@ async def on_ready():
     f'{guild.name}(id: {guild.id})'
   )
 
-  members = '\n - '.join([member.name for member in guild.members])
-  print(f'Guild Members:\n - {members}\n')
-
 @client.event
 async def on_member_update(before, after):
   guild = discord.utils.get(client.guilds, name=GUILD)
