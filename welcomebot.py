@@ -5,8 +5,8 @@ import discord
 from dotenv import load_dotenv
 from discord.ext import commands
 
-text_file = open("welcome_message.txt", "r")
-welcome_messages = text_file.read().split("[/]")
+text_file = open('welcome_message.txt', 'r')
+welcome_messages = text_file.read().split('[/]')
 text_file.close()
 
 load_dotenv()

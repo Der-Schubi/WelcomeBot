@@ -1,0 +1,16 @@
+# Placed in /etc/systemd/system
+[Unit]
+Description=Discord Bot to send greeting message to new Commanders
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=exec
+Restart=always
+RestartSec=3
+WorkingDirectory=/etc/welcomebot/
+ExecStart=/etc/welcomebot/welcomebot.py
+SyslogIdentifier=welcomebot
+
+[Install]
+WantedBy=multi-user.target
