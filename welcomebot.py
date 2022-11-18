@@ -59,6 +59,6 @@ async def on_message(message):
         print(f'Sending Welcome Message to {member.name}...\n')
         await member.create_dm()
         for message in welcome_messages:
-          await after.dm_channel.send(message)
+          await member.dm_channel.send(message)
 
 client.run(TOKEN)
