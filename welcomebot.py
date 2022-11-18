@@ -61,6 +61,6 @@ async def welcome(ctx):
       await member.create_dm()
       for message in welcome_messages:
         await member.dm_channel.send(message)
-      await ctx.send(f'OK, I sent the welcome message to {member.name}.')
+      await ctx.reply(f'OK, I sent the welcome message to {member.name}.')
 
 bot.run(TOKEN)
