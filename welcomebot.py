@@ -61,6 +61,7 @@ async def welcome(ctx):
       await member.create_dm()
       for message in welcome_messages:
         await member.dm_channel.send(message)
-      await ctx.reply(f'OK, I sent the welcome message to {member.name}.')
+    await ctx.message.add_reaction('<:O7_2:641014558982537236>')
+    # To get the string for a custom emoji type \:emoji_name: in Discord and press enter
 
 bot.run(TOKEN)
