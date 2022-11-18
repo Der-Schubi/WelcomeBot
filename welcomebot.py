@@ -4,6 +4,7 @@ import os
 import discord
 import re
 from dotenv import load_dotenv
+from discord.ext import commands
 
 text_file = open("welcome_message.txt", "r")
 welcome_messages = text_file.read().split("[/]")
@@ -13,19 +14,19 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 
-client = discord.Client(intents=discord.Intents.all())
+bot = commands.Bot(intents=discord.Intents.all(), command_prefix='/')
 
-@client.event
+@bot.event
 async def on_ready():
-  guild = discord.utils.get(client.guilds, name=GUILD)
+  guild = discord.utils.get(bot.guilds, name=GUILD)
   print(
-    f'{client.user} is connected to the following guild:\n'
-    f'{guild.name}(id: {guild.id})'
+    f'{bot.user} is connected to the following guild:\n'
+    f'{guild.name}(id: {guild.id})\n'
   )
 
-@client.event
+@bot.event
 async def on_member_update(before, after):
-  guild = discord.utils.get(client.guilds, name=GUILD)
+  guild = discord.utils.get(bot.guilds, name=GUILD)
   welcome_role = discord.utils.get(guild.roles, name="welcome")
 
   if welcome_role in after.roles and not welcome_role in before.roles:
@@ -37,28 +38,29 @@ async def on_member_update(before, after):
     print(f'Removing Role from User...\n')
     await after.remove_roles(welcome_role)
 
-@client.event
-async def on_message(message):
-  if message.author == client.user:
+
+@bot.command(name='welcome')
+async def welcome(ctx):
+  if ctx.author == bot.user:
     return
 
-  if message.content.lower().startswith('/welcome '):
-    print('Message incoming:')
-    print(f'Author Name: {message.author.name}')
-    print(f'Author ID: {message.author.id}')
-    print(f'Content: {message.content}')
-    print(f'Clean_Content: {message.clean_content}')
-    print(f'System_Content: {message.system_content}\n')
+  print('Command incoming:')
+  print(f'Author Name: {ctx.author.name}')
+  print(f'Author ID: {ctx.author.id}')
+  print(f'Content: {ctx.message.content}')
+  print(f'Clean_Content: {ctx.message.clean_content}')
+  print(f'System_Content: {ctx.message.system_content}\n')
 
-    if '<@' in message.system_content.lower():
-      mentions = re.findall(r'\<.*?\>', message.system_content)
-      for mention in mentions:
-        print(f'Found Mention: {mention}')
-        user_id = int(mention.replace("<", "").replace(">", "").replace("@", ""))
-        member = client.get_user(user_id)
-        print(f'Sending Welcome Message to {member.name}...\n')
-        await member.create_dm()
-        for message in welcome_messages:
-          await member.dm_channel.send(message)
+  if '<@' in ctx.message.system_content.lower():
+    mentions = re.findall(r'\<.*?\>', ctx.message.system_content)
+    for mention in mentions:
+      print(f'Found Mention: {mention}')
+      user_id = int(mention.replace("<", "").replace(">", "").replace("@", ""))
+      member = bot.get_user(user_id)
+      print(f'Sending Welcome Message to {member.name}...\n')
+      await member.create_dm()
+      for message in welcome_messages:
+        await member.dm_channel.send(message)
+      await ctx.send(f'OK, I sent the welcome message to {member.name}.')
 
-client.run(TOKEN)
+bot.run(TOKEN)
