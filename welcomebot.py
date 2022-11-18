@@ -38,8 +38,14 @@ async def on_member_update(before, after):
     print(f'Removing Role from User...\n')
     await after.remove_roles(welcome_role)
 
+async def is_user_qualified(ctx):
+  guild = discord.utils.get(bot.guilds, name=GUILD)
+  sc_role = discord.utils.get(guild.roles, name="GPL Squadroncommander")
+  return sc_role in ctx.author.roles
+
 @bot.command(name='welcome', help='Sends the welcome message to the specified user(s).\n'
              'Users can be one or more, they can be specified by mentioning them or just typing their names or IDs.')
+@commands.check(is_user_qualified)
 async def welcome(ctx, *members: discord.Member):
   if ctx.author == bot.user:
     return
@@ -56,5 +62,7 @@ async def welcome(ctx, *members: discord.Member):
 async def welcome_error(ctx, error):
     if isinstance(error, commands.BadArgument):
         await ctx.reply('I could not find that member!')
+    elif isinstance(error, commands.CommandError):
+        await ctx.reply('You must be a Squadroncommander to tell me what to do!')
 
 bot.run(TOKEN)
