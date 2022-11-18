@@ -11,14 +11,17 @@ welcome_messages = text_file.read().split("[/]")
 text_file.close()
 
 load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
-GUILD = os.getenv('DISCORD_GUILD')
+ENV_TOKEN = os.getenv('DISCORD_TOKEN')
+ENV_GUILD = os.getenv('DISCORD_GUILD')
+ENV_REACTION = os.getenv('DISCORD_REACTION')
+ENV_COMMAND_ROLE = os.getenv('DISCORD_COMMAND_ROLE')
+ENV_WELCOME_ROLE = os.getenv('DISCORD_WELCOME_ROLE')
 
 bot = commands.Bot(intents=discord.Intents.all(), command_prefix='/')
 
 @bot.event
 async def on_ready():
-  guild = discord.utils.get(bot.guilds, name=GUILD)
+  guild = discord.utils.get(bot.guilds, name=ENV_GUILD)
   print(
     f'{bot.user} is connected to the following guild:\n'
     f'{guild.name}(id: {guild.id})\n'
@@ -26,8 +29,8 @@ async def on_ready():
 
 @bot.event
 async def on_member_update(before, after):
-  guild = discord.utils.get(bot.guilds, name=GUILD)
-  welcome_role = discord.utils.get(guild.roles, name="welcome")
+  guild = discord.utils.get(bot.guilds, name=ENV_GUILD)
+  welcome_role = discord.utils.get(guild.roles, name=ENV_WELCOME_ROLE)
 
   if welcome_role in after.roles and not welcome_role in before.roles:
     print(f'Role {welcome_role.name} was added to User {after.name}')
@@ -39,9 +42,9 @@ async def on_member_update(before, after):
     await after.remove_roles(welcome_role)
 
 async def is_user_qualified(ctx):
-  guild = discord.utils.get(bot.guilds, name=GUILD)
-  sc_role = discord.utils.get(guild.roles, name="GPL Squadroncommander")
-  return sc_role in ctx.author.roles
+  guild = discord.utils.get(bot.guilds, name=ENV_GUILD)
+  command_role = discord.utils.get(guild.roles, name=ENV_COMMAND_ROLE)
+  return command_role in ctx.author.roles
 
 @bot.command(name='welcome', help='Sends the welcome message to the specified user(s).\n'
              'Users can be one or more, they can be specified by mentioning them or just typing their names or IDs.')
@@ -55,7 +58,7 @@ async def welcome(ctx, *members: discord.Member):
     await member.create_dm()
     for message in welcome_messages:
       await member.dm_channel.send(message)
-    await ctx.message.add_reaction('<:O7_2:641014558982537236>')
+    await ctx.message.add_reaction(ENV_REACTION)
     # To get the string for a custom emoji type \:emoji_name: in Discord and press enter
 
 @welcome.error
@@ -63,6 +66,6 @@ async def welcome_error(ctx, error):
     if isinstance(error, commands.BadArgument):
         await ctx.reply('I could not find that member!')
     elif isinstance(error, commands.CommandError):
-        await ctx.reply('You must be a Squadroncommander to tell me what to do!')
+        await ctx.reply(f'You must have the role {ENV_COMMAND_ROLE} to tell me what to do!')
 
-bot.run(TOKEN)
+bot.run(ENV_TOKEN)
