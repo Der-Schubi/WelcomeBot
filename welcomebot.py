@@ -39,7 +39,8 @@ async def on_member_update(before, after):
     await after.remove_roles(welcome_role)
 
 
-@bot.command(name='welcome')
+@bot.command(name='welcome', help='Sends the welcome message to the specified user(s).\n'
+             'Users can be one or more, they can be specified by mentioning them or just typing their names or IDs.')
 async def welcome(ctx, *members: discord.Member):
   if ctx.author == bot.user:
     return
