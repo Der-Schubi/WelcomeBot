@@ -40,27 +40,15 @@ async def on_member_update(before, after):
 
 
 @bot.command(name='welcome')
-async def welcome(ctx):
+async def welcome(ctx, *members: discord.Member):
   if ctx.author == bot.user:
     return
 
-  print('Command incoming:')
-  print(f'Author Name: {ctx.author.name}')
-  print(f'Author ID: {ctx.author.id}')
-  print(f'Content: {ctx.message.content}')
-  print(f'Clean_Content: {ctx.message.clean_content}')
-  print(f'System_Content: {ctx.message.system_content}\n')
-
-  if '<@' in ctx.message.system_content.lower():
-    mentions = re.findall(r'\<.*?\>', ctx.message.system_content)
-    for mention in mentions:
-      print(f'Found Mention: {mention}')
-      user_id = int(mention.replace("<", "").replace(">", "").replace("@", ""))
-      member = bot.get_user(user_id)
-      print(f'Sending Welcome Message to {member.name}...\n')
-      await member.create_dm()
-      for message in welcome_messages:
-        await member.dm_channel.send(message)
+  for member in members:
+    print(f'Sending Welcome Message to {member.name}...\n')
+    await member.create_dm()
+    for message in welcome_messages:
+      await member.dm_channel.send(message)
     await ctx.message.add_reaction('<:O7_2:641014558982537236>')
     # To get the string for a custom emoji type \:emoji_name: in Discord and press enter
 
