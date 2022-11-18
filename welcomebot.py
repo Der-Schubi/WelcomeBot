@@ -38,7 +38,6 @@ async def on_member_update(before, after):
     print(f'Removing Role from User...\n')
     await after.remove_roles(welcome_role)
 
-
 @bot.command(name='welcome', help='Sends the welcome message to the specified user(s).\n'
              'Users can be one or more, they can be specified by mentioning them or just typing their names or IDs.')
 async def welcome(ctx, *members: discord.Member):
@@ -52,5 +51,10 @@ async def welcome(ctx, *members: discord.Member):
       await member.dm_channel.send(message)
     await ctx.message.add_reaction('<:O7_2:641014558982537236>')
     # To get the string for a custom emoji type \:emoji_name: in Discord and press enter
+
+@welcome.error
+async def welcome_error(ctx, error):
+    if isinstance(error, commands.BadArgument):
+        await ctx.reply('I could not find that member!')
 
 bot.run(TOKEN)
