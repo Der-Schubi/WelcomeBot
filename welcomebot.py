@@ -2,7 +2,6 @@
 # welcomebot.py
 import os
 import discord
-import re
 from dotenv import load_dotenv
 from discord.ext import commands
 
