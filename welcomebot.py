@@ -5,14 +5,6 @@ import disnake
 from dotenv import load_dotenv
 from disnake.ext import commands
 
-text_file = open('welcome_message.txt', 'r')
-welcome_messages = text_file.read().split('[/]')
-text_file.close()
-
-text_file = open('help_message.txt', 'r')
-help_messages = text_file.read().split('[/]')
-text_file.close()
-
 load_dotenv()
 ENV_TOKEN = os.getenv('DISCORD_TOKEN')
 ENV_GUILD = os.getenv('DISCORD_GUILD')
@@ -20,6 +12,17 @@ ENV_REACTION = os.getenv('DISCORD_REACTION')
 ENV_COMMAND_ROLE = os.getenv('DISCORD_COMMAND_ROLE')
 ENV_WELCOME_ROLE = os.getenv('DISCORD_WELCOME_ROLE')
 ENV_LOG_CHANNEL = os.getenv('DISCORD_LOG_CHANNEL')
+ENV_BLACKLIST = os.getenv('DISCORD_BLACKLIST')
+
+blacklist = ENV_BLACKLIST.split(",")
+
+text_file = open('welcome_message.txt', 'r')
+welcome_messages = text_file.read().split('[/]')
+text_file.close()
+
+text_file = open('help_message.txt', 'r')
+help_messages = text_file.read().split('[/]')
+text_file.close()
 
 bot = commands.Bot(
   command_prefix="/",
@@ -42,15 +45,20 @@ async def on_member_update(before, after):
   welcome_role = disnake.utils.get(guild.roles, name=ENV_WELCOME_ROLE)
 
   if welcome_role in after.roles and not welcome_role in before.roles:
-    print(f'Role {welcome_role.name} was added to User {after.nick}')
-    print(f'Sending Welcome Message to {after.nick}...')
-    await after.create_dm()
-    for message in welcome_messages:
-      await after.dm_channel.send(message)
+    if str(after.id) in blacklist:
+      channel = disnake.utils.get(guild.channels, name=ENV_LOG_CHANNEL)
+      await channel.send(f"I’m sorry Dave, I’m afraid I can’t do that…")
+      print(f'User {after.nick} is in blacklist, cowardly refusing to send message!')
+    else:
+      print(f'Role {welcome_role.name} was added to User {after.nick}')
+      print(f'Sending Welcome Message to {after.nick}...')
+      await after.create_dm()
+      for message in welcome_messages:
+        await after.dm_channel.send(message)
+      channel = disnake.utils.get(guild.channels, name=ENV_LOG_CHANNEL)
+      await channel.send(f"Sent Welcome Message to {after.nick}.")
     print(f'Removing Role from User...\n')
     await after.remove_roles(welcome_role)
-    channel = disnake.utils.get(guild.channels, name=ENV_LOG_CHANNEL)
-    await channel.send(f"Sent Welcome Message to {after.nick}.")
 
 async def is_user_qualified(inter: disnake.ApplicationCommandInteraction):
   guild = disnake.utils.get(bot.guilds, name=ENV_GUILD)
@@ -60,7 +68,9 @@ async def is_user_qualified(inter: disnake.ApplicationCommandInteraction):
 @bot.slash_command(name='welcome', description='Sends the welcome message to the specified user.')
 @commands.check(is_user_qualified)
 async def welcome(inter: disnake.ApplicationCommandInteraction, member: disnake.Member) -> None:
-  if inter.author == bot.user:
+  if str(member.id) in blacklist:
+    await inter.response.send_message(f"I’m sorry <@{inter.author.id}>, I’m afraid I can’t do that…")
+    print(f'User {member.nick} is in blacklist, cowardly refusing to send message!')
     return
 
   print(f'Sending Welcome Message to {member.nick}...\n')
@@ -81,10 +91,6 @@ async def welcome_error(inter: disnake.ApplicationCommandInteraction, error):
 
 @bot.slash_command(name='help', description='Help to Schubi\'s WelcomeBot.')
 async def help(inter: disnake.ApplicationCommandInteraction) -> None:
-  if inter.author == bot.user:
-    return
-
-  for message in help_messages:
-    await inter.response.send_message(message)
+  await inter.response.send_message(message)
 
 bot.run(ENV_TOKEN)
