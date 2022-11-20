@@ -9,6 +9,10 @@ text_file = open('welcome_message.txt', 'r')
 welcome_messages = text_file.read().split('[/]')
 text_file.close()
 
+text_file = open('help_message.txt', 'r')
+help_messages = text_file.read().split('[/]')
+text_file.close()
+
 load_dotenv()
 ENV_TOKEN = os.getenv('DISCORD_TOKEN')
 ENV_GUILD = os.getenv('DISCORD_GUILD')
@@ -20,7 +24,7 @@ ENV_LOG_CHANNEL = os.getenv('DISCORD_LOG_CHANNEL')
 bot = commands.Bot(
   command_prefix="/",
   intents=disnake.Intents.all(),
-  #help_command=None,
+  help_command=None,
   #sync_commands_debug=True,
 )
 
@@ -53,7 +57,7 @@ async def is_user_qualified(inter: disnake.ApplicationCommandInteraction):
   command_role = disnake.utils.get(guild.roles, name=ENV_COMMAND_ROLE)
   return command_role in inter.author.roles
 
-@bot.slash_command(name='welcome', description='Sends the welcome message to the specified user(s).')
+@bot.slash_command(name='welcome', description='Sends the welcome message to the specified user.')
 @commands.check(is_user_qualified)
 async def welcome(inter: disnake.ApplicationCommandInteraction, member: disnake.Member) -> None:
   if inter.author == bot.user:
@@ -74,5 +78,13 @@ async def welcome_error(inter: disnake.ApplicationCommandInteraction, error):
         await inter.response.send_message('I could not find that member!')
     elif isinstance(error, commands.CommandError):
         await inter.response.send_message(f'You must have the role {ENV_COMMAND_ROLE} to tell me what to do!')
+
+@bot.slash_command(name='help', description='Help to Schubi\'s WelcomeBot.')
+async def help(inter: disnake.ApplicationCommandInteraction) -> None:
+  if inter.author == bot.user:
+    return
+
+  for message in help_messages:
+    await inter.response.send_message(message)
 
 bot.run(ENV_TOKEN)

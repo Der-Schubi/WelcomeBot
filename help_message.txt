@@ -1,0 +1,4 @@
+Help to Schubi's WelcomeBot
+
+This bot sends a predefined welcome message as direct message to the defined user.
+Use /welcome @Username, or give the user the role 'welcome'.
