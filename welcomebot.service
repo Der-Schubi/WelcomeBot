@@ -10,6 +10,8 @@ Restart=always
 RestartSec=3
 WorkingDirectory=/etc/welcomebot/
 ExecStart=/etc/welcomebot/welcomebot.py
+StandardOutput=journal+console
+StandardError=journal+console
 SyslogIdentifier=welcomebot
 
 [Install]
