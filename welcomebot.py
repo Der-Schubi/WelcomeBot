@@ -33,15 +33,15 @@ async def on_member_update(before, after):
   welcome_role = discord.utils.get(guild.roles, name=ENV_WELCOME_ROLE)
 
   if welcome_role in after.roles and not welcome_role in before.roles:
-    print(f'Role {welcome_role.name} was added to User {after.name}')
-    print(f'Sending Welcome Message to {after.name}...')
+    print(f'Role {welcome_role.name} was added to User {after.nick}')
+    print(f'Sending Welcome Message to {after.nick}...')
     await after.create_dm()
     for message in welcome_messages:
       await after.dm_channel.send(message)
     print(f'Removing Role from User...\n')
     await after.remove_roles(welcome_role)
     channel = discord.utils.get(guild.channels, name=ENV_LOG_CHANNEL)
-    await channel.send(f"Sent Welcome Message to {after.name}.")
+    await channel.send(f"Sent Welcome Message to {after.nick}.")
 
 async def is_user_qualified(ctx):
   guild = discord.utils.get(bot.guilds, name=ENV_GUILD)
@@ -56,14 +56,14 @@ async def welcome(ctx, *members: discord.Member):
     return
 
   for member in members:
-    print(f'Sending Welcome Message to {member.name}...\n')
+    print(f'Sending Welcome Message to {member.nick}...\n')
     await member.create_dm()
     for message in welcome_messages:
       await member.dm_channel.send(message)
     # To get the string for a custom emoji type \:emoji_name: in Discord and press enter
     await ctx.message.add_reaction(ENV_REACTION)
     channel = discord.utils.get(ctx.guild.channels, name=ENV_LOG_CHANNEL)
-    await channel.send(f"Sent Welcome Message to {member.name}.")
+    await channel.send(f"Sent Welcome Message to {member.nick}.")
 
 @welcome.error
 async def welcome_error(ctx, error):
