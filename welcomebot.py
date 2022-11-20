@@ -21,7 +21,7 @@ welcome_messages = text_file.read().split('[/]')
 text_file.close()
 
 text_file = open('help_message.txt', 'r')
-help_messages = text_file.read().split('[/]')
+help_messages = text_file.read()
 text_file.close()
 
 bot = commands.Bot(
