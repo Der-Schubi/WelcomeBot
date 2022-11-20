@@ -35,7 +35,7 @@ bot = commands.Bot(
 async def on_ready():
   guild = disnake.utils.get(bot.guilds, name=ENV_GUILD)
   print(
-    f'{bot.user} is connected to the following guild:\n'
+    f'{bot.user} is connected to the following Guild:\n'
     f'{guild.name}(id: {guild.id})\n'
   )
 
@@ -48,7 +48,7 @@ async def on_member_update(before, after):
     if str(after.id) in blacklist:
       channel = disnake.utils.get(guild.channels, name=ENV_LOG_CHANNEL)
       await channel.send(f"I’m sorry Dave, I’m afraid I can’t do that…")
-      print(f'User {after.nick} is in blacklist, cowardly refusing to send message!')
+      print(f'User {after.nick} is in Blacklist, cowardly refusing to send Message!')
     else:
       print(f'Role {welcome_role.name} was added to User {after.nick}')
       print(f'Sending Welcome Message to {after.nick}...')
@@ -65,12 +65,12 @@ async def is_user_qualified(inter: disnake.ApplicationCommandInteraction):
   command_role = disnake.utils.get(guild.roles, name=ENV_COMMAND_ROLE)
   return command_role in inter.author.roles
 
-@bot.slash_command(name='welcome', description='Sends the welcome message to the specified user.')
+@bot.slash_command(name='welcome', description='Sends the Welcome Message to the specified User.')
 @commands.check(is_user_qualified)
 async def welcome(inter: disnake.ApplicationCommandInteraction, member: disnake.Member) -> None:
   if str(member.id) in blacklist:
     await inter.response.send_message(f"I’m sorry <@{inter.author.id}>, I’m afraid I can’t do that…")
-    print(f'User {member.nick} is in blacklist, cowardly refusing to send message!')
+    print(f'User {member.nick} is in Blacklist, cowardly refusing to send Message!')
     return
 
   print(f'Sending Welcome Message to {member.nick}...\n')
@@ -79,15 +79,15 @@ async def welcome(inter: disnake.ApplicationCommandInteraction, member: disnake.
     await member.dm_channel.send(message)
   channel = disnake.utils.get(inter.guild.channels, name=ENV_LOG_CHANNEL)
   await channel.send(f"Sent Welcome Message to {member.nick}.")
-  # To get the string for a custom emoji type \:emoji_name: in Discord and press enter
+  # To get the String for a custom Emoji, type \:emoji_name: in Discord and press Enter
   await inter.response.send_message(ENV_REACTION)
 
 @welcome.error
 async def welcome_error(inter: disnake.ApplicationCommandInteraction, error):
     if isinstance(error, commands.BadArgument):
-        await inter.response.send_message('I could not find that member!')
+        await inter.response.send_message('I couldn\'t find that Member!')
     elif isinstance(error, commands.CommandError):
-        await inter.response.send_message(f'You must have the role {ENV_COMMAND_ROLE} to tell me what to do!')
+        await inter.response.send_message(f'You must have the Role {ENV_COMMAND_ROLE} to tell me what to do!')
 
 @bot.slash_command(name='help', description='Help to Schubi\'s WelcomeBot.')
 async def help(inter: disnake.ApplicationCommandInteraction) -> None:
