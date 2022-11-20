@@ -15,6 +15,7 @@ ENV_GUILD = os.getenv('DISCORD_GUILD')
 ENV_REACTION = os.getenv('DISCORD_REACTION')
 ENV_COMMAND_ROLE = os.getenv('DISCORD_COMMAND_ROLE')
 ENV_WELCOME_ROLE = os.getenv('DISCORD_WELCOME_ROLE')
+ENV_LOG_CHANNEL = os.getenv('DISCORD_LOG_CHANNEL')
 
 bot = commands.Bot(intents=discord.Intents.all(), command_prefix='/')
 
@@ -39,6 +40,8 @@ async def on_member_update(before, after):
       await after.dm_channel.send(message)
     print(f'Removing Role from User...\n')
     await after.remove_roles(welcome_role)
+    channel = discord.utils.get(guild.channels, name=ENV_LOG_CHANNEL)
+    await channel.send(f"Sent Welcome Message to {after.name}.")
 
 async def is_user_qualified(ctx):
   guild = discord.utils.get(bot.guilds, name=ENV_GUILD)
@@ -57,8 +60,10 @@ async def welcome(ctx, *members: discord.Member):
     await member.create_dm()
     for message in welcome_messages:
       await member.dm_channel.send(message)
-    await ctx.message.add_reaction(ENV_REACTION)
     # To get the string for a custom emoji type \:emoji_name: in Discord and press enter
+    await ctx.message.add_reaction(ENV_REACTION)
+    channel = discord.utils.get(ctx.guild.channels, name=ENV_LOG_CHANNEL)
+    await channel.send(f"Sent Welcome Message to {member.name}.")
 
 @welcome.error
 async def welcome_error(ctx, error):
