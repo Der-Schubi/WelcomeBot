@@ -44,11 +44,11 @@ async def on_ready():
 @bot.event
 async def on_member_update(before, after):
   guild = disnake.utils.get(bot.guilds, name=ENV_GUILD)
+  channel = disnake.utils.get(guild.channels, name=ENV_LOG_CHANNEL)
   welcome_role = disnake.utils.get(guild.roles, name=ENV_WELCOME_ROLE)
 
   if welcome_role in after.roles and not welcome_role in before.roles:
     if str(after.id) in blacklist:
-      channel = disnake.utils.get(guild.channels, name=ENV_LOG_CHANNEL)
       await channel.send(f'I’m sorry Dave, I’m afraid I can’t do that…')
       print(f'User {after.nick} is in Blacklist, cowardly refusing to send Message!')
     else:
@@ -57,7 +57,6 @@ async def on_member_update(before, after):
       await after.create_dm()
       for message in welcome_messages:
         await after.dm_channel.send(message)
-      channel = disnake.utils.get(guild.channels, name=ENV_LOG_CHANNEL)
       await channel.send(f'Sent Welcome Message to {after.nick}.')
     print(f'Removing Role from User...\n')
     await after.remove_roles(welcome_role)
