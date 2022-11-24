@@ -14,7 +14,7 @@ ENV_WELCOME_ROLE = os.getenv('DISCORD_WELCOME_ROLE')
 ENV_LOG_CHANNEL = os.getenv('DISCORD_LOG_CHANNEL')
 ENV_BLACKLIST = os.getenv('DISCORD_BLACKLIST')
 
-blacklist = ENV_BLACKLIST.split(",")
+blacklist = ENV_BLACKLIST.split(',')
 
 text_file = open('welcome_message.txt', 'r')
 welcome_messages = text_file.read().split('[/]')
@@ -25,7 +25,7 @@ help_messages = text_file.read()
 text_file.close()
 
 bot = commands.Bot(
-  command_prefix="/",
+  command_prefix='/',
   intents=disnake.Intents.all(),
   help_command=None,
   #sync_commands_debug=True,
@@ -47,7 +47,7 @@ async def on_member_update(before, after):
   if welcome_role in after.roles and not welcome_role in before.roles:
     if str(after.id) in blacklist:
       channel = disnake.utils.get(guild.channels, name=ENV_LOG_CHANNEL)
-      await channel.send(f"I’m sorry Dave, I’m afraid I can’t do that…")
+      await channel.send(f'I’m sorry Dave, I’m afraid I can’t do that…')
       print(f'User {after.nick} is in Blacklist, cowardly refusing to send Message!')
     else:
       print(f'Role {welcome_role.name} was added to User {after.nick}')
@@ -56,7 +56,7 @@ async def on_member_update(before, after):
       for message in welcome_messages:
         await after.dm_channel.send(message)
       channel = disnake.utils.get(guild.channels, name=ENV_LOG_CHANNEL)
-      await channel.send(f"Sent Welcome Message to {after.nick}.")
+      await channel.send(f'Sent Welcome Message to {after.nick}.')
     print(f'Removing Role from User...\n')
     await after.remove_roles(welcome_role)
 
@@ -69,7 +69,7 @@ async def is_user_qualified(inter: disnake.ApplicationCommandInteraction):
 @commands.check(is_user_qualified)
 async def welcome(inter: disnake.ApplicationCommandInteraction, member: disnake.Member) -> None:
   if str(member.id) in blacklist:
-    await inter.response.send_message(f"I’m sorry <@{inter.author.id}>, I’m afraid I can’t do that…")
+    await inter.response.send_message(f'I’m sorry <@{inter.author.id}>, I’m afraid I can’t do that…')
     print(f'User {member.nick} is in Blacklist, cowardly refusing to send Message!')
     return
 
@@ -78,7 +78,7 @@ async def welcome(inter: disnake.ApplicationCommandInteraction, member: disnake.
   for message in welcome_messages:
     await member.dm_channel.send(message)
   channel = disnake.utils.get(inter.guild.channels, name=ENV_LOG_CHANNEL)
-  await channel.send(f"Sent Welcome Message to {member.nick}.")
+  await channel.send(f'Sent Welcome Message to {member.nick}.')
   # To get the String for a custom Emoji, type \:emoji_name: in Discord and press Enter
   await inter.response.send_message(ENV_REACTION)
 
