@@ -84,10 +84,10 @@ async def welcome(inter: disnake.ApplicationCommandInteraction, member: disnake.
 
 @welcome.error
 async def welcome_error(inter: disnake.ApplicationCommandInteraction, error):
-    if isinstance(error, commands.BadArgument):
-        await inter.response.send_message('I couldn\'t find that Member!')
-    elif isinstance(error, commands.CommandError):
-        await inter.response.send_message(f'You must have the Role {ENV_COMMAND_ROLE} to tell me what to do!')
+  if isinstance(error, commands.BadArgument):
+    await inter.response.send_message('I couldn\'t find that Member!')
+  elif isinstance(error, commands.CommandError):
+    await inter.response.send_message(f'You must have the Role {ENV_COMMAND_ROLE} to tell me what to do!')
 
 @bot.slash_command(name='help', description='Help to Schubi\'s WelcomeBot.')
 async def help(inter: disnake.ApplicationCommandInteraction) -> None:
