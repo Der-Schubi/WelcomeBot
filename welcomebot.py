@@ -80,7 +80,6 @@ async def welcome(inter: disnake.ApplicationCommandInteraction, member: disnake.
     await member.dm_channel.send(message)
   channel = disnake.utils.get(inter.guild.channels, name=ENV_LOG_CHANNEL)
   await channel.send(f'Sent Welcome Message to {member.nick}.')
-  # To get the String for a custom Emoji, type \:emoji_name: in Discord and press Enter
   await inter.response.send_message(ENV_REACTION)
 
 @welcome.error
