@@ -13,6 +13,7 @@ ENV_COMMAND_ROLE = os.getenv('DISCORD_COMMAND_ROLE')
 ENV_WELCOME_ROLE = os.getenv('DISCORD_WELCOME_ROLE')
 ENV_LOG_CHANNEL = os.getenv('DISCORD_LOG_CHANNEL')
 ENV_BLACKLIST = os.getenv('DISCORD_BLACKLIST')
+ENV_STATUS = os.getenv('DISCORD_STATUS')
 
 blacklist = ENV_BLACKLIST.split(',')
 
@@ -38,6 +39,7 @@ async def on_ready():
     f'{bot.user} is connected to the following Guild:\n'
     f'{guild.name}(id: {guild.id})\n'
   )
+  await bot.change_presence(activity=disnake.Game(name=ENV_STATUS))
 
 @bot.event
 async def on_member_update(before, after):
