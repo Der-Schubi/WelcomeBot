@@ -8,6 +8,7 @@ After=network-online.target
 Type=exec
 Restart=always
 RestartSec=3
+RuntimeMaxSec=1d
 WorkingDirectory=/etc/welcomebot/
 ExecStart=/etc/welcomebot/welcomebot.py
 StandardOutput=journal+console
