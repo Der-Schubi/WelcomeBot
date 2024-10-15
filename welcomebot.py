@@ -43,6 +43,7 @@ Newbies = Query() # type: tinydb.queries.Query
 
 class TimerCog(commands.Cog):
   def __init__(self):
+    self.bot = bot
     self.timer.start()
 
   def cog_unload(self):
@@ -50,20 +51,26 @@ class TimerCog(commands.Cog):
 
   @tasks.loop(seconds=3600.0)
   async def timer(self):
-    if len(bot.guilds) >= 1:
-      guild = disnake.utils.get(bot.guilds, name=ENV_GUILD)
-      channel = disnake.utils.get(guild.channels, name=ENV_LOG_CHANNEL)
-      newbie_role = disnake.utils.get(guild.roles, name=ENV_NEWBIE_ROLE)
-      current_datetime = datetime.now()
-      print(f'Searching for Users to remove the Role {newbie_role.name}. Current Datetime: {current_datetime}')
-      results = db.search(Newbies.timestamp <= current_datetime.timestamp())
-      for res in results:
-        print(f'Removing the Role {newbie_role.name} from User {res['name']}…')
-        print('Database Entry:', res) # type: tinydb.database.Document
-        user = disnake.utils.get(guild.members, id=res['id'])
-        await user.remove_roles(newbie_role)
-        db.remove(Newbies.id == user.id)
-        await channel.send(f'Removed the Role {newbie_role.name} from User {getName(user)}.')
+    guild = disnake.utils.get(bot.guilds, name=ENV_GUILD)
+    channel = disnake.utils.get(guild.channels, name=ENV_LOG_CHANNEL)
+    newbie_role = disnake.utils.get(guild.roles, name=ENV_NEWBIE_ROLE)
+    current_datetime = datetime.now()
+    print(f'Current Datetime: {current_datetime}')
+    print(f'Searching for Users to remove the Role {newbie_role.name}.')
+    results = db.search(Newbies.timestamp <= current_datetime.timestamp())
+    print(f'Found: {len(results)}')
+    for res in results:
+      print(f'Removing the Role {newbie_role.name} from User {res['name']}…')
+      print('Database Entry:', res) # type: tinydb.database.Document
+      user = disnake.utils.get(guild.members, id=res['id'])
+      await user.remove_roles(newbie_role)
+      db.remove(Newbies.id == user.id)
+      await channel.send(f'Removed the Role {newbie_role.name} from User {getName(user)}.')
+
+  @timer.before_loop
+  async def before_timer(self):
+    print('Waiting for Bot to connect…')
+    await self.bot.wait_until_ready()
 
 def getName(member):
   if member.nick == None:
