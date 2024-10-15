@@ -65,7 +65,7 @@ class TimerCog(commands.Cog):
       user = disnake.utils.get(guild.members, id=res['id'])
       await user.remove_roles(newbie_role)
       db.remove(Newbies.id == user.id)
-      await channel.send(f'Removed the Role {newbie_role.name} from User {getName(user)}.')
+      await channel.send(f'Removed the Role {newbie_role.name} from User <@{user.id}>.')
 
   @timer.before_loop
   async def before_timer(self):
@@ -105,7 +105,7 @@ async def on_member_update(before, after):
       later_datetime.timestamp()
       timestamp = later_datetime.timestamp()
       db.insert({'id': after.id, 'name': getName(after), 'timestamp': timestamp})
-      await channel.send(f'Role {newbie_role.name} was added to User {getName(after)} and will be removed after {ENV_NEWBIE_DAYS} Days.')
+      await channel.send(f'Role {newbie_role.name} was added to User <@{after.id}> and will be removed after {ENV_NEWBIE_DAYS} Days.')
 
     if welcome_role in after.roles and not welcome_role in before.roles:
       print(f'Role {welcome_role.name} was added to User {getName(after)}')
