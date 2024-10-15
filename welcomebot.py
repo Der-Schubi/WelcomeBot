@@ -51,12 +51,12 @@ class TimerCog(commands.Cog):
 
   @tasks.loop(seconds=3600.0)
   async def timer(self):
-    guild = disnake.utils.get(bot.guilds, name=ENV_GUILD)
+    guild = disnake.utils.get(self.bot.guilds, name=ENV_GUILD)
     channel = disnake.utils.get(guild.channels, name=ENV_LOG_CHANNEL)
     newbie_role = disnake.utils.get(guild.roles, name=ENV_NEWBIE_ROLE)
     current_datetime = datetime.now()
     print(f'Current Datetime: {current_datetime}')
-    print(f'Searching for Users to remove the Role {newbie_role.name}.')
+    print(f'Searching for Users to remove the Role {newbie_role.name}…')
     results = db.search(Newbies.timestamp <= current_datetime.timestamp())
     print(f'Found: {len(results)}')
     for res in results:
