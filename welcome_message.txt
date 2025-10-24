@@ -5,10 +5,10 @@ Bevor Du loslegst, möchten wir Dir hiermit ein paar Tipps zur Orientierung mitg
 __**Orientierung auf dem Server**__
 [/]
 **Public**
-Unter Public dürfen alle, also auch nicht-Mitglieder der GPL lesen und schreiben, hier sollten also keine Interna der BGS oder Ähnliches diskutiert werden. Aber für allgemeines (<#359600174550482954>), lockeres und auch themenbezogenes (<#905071080463560726>) Quatschen bist Du hier richtig!
+Im Public-Bereich dürfen alle, also auch nicht-Mitglieder der GPL lesen und schreiben, hier sollten also keine Interna der BGS oder Ähnliches diskutiert werden. Aber für allgemeines (<#359600174550482954>), lockeres und auch themenbezogenes (<#905071080463560726>) Quatschen bist Du hier richtig!
 
 **GPL Interna**
-Hier können nur Vollmitglieder der GPL lesen und schreiben.
+Hier können nur Mitglieder der GPL lesen und schreiben. Auch Anwärter haben hier keinen Zugriff.
 
 **Ontopic**
 Hier findest Du für praktisch jede spielbezogene Frage oder jedes Thema den richtigen Kanal.
