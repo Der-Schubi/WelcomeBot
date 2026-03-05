@@ -13,6 +13,9 @@ cp ./*.service /etc/systemd/system/
 #cp ./*.timer /etc/systemd/system/
 
 python3 -m venv /etc/welcomebot/
+/etc/welcomebot/bin/pip install -U disnake
+/etc/welcomebot/bin/pip install -U dotenv
+/etc/welcomebot/bin/pip install -U tinydb
 
 systemctl daemon-reload
 
