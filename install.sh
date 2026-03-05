@@ -12,6 +12,8 @@ chmod +x /etc/welcomebot/welcomebot.py
 cp ./*.service /etc/systemd/system/
 #cp ./*.timer /etc/systemd/system/
 
+python3 -m venv /etc/welcomebot/
+
 systemctl daemon-reload
 
 systemctl start welcomebot.service

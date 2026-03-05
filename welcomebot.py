@@ -1,4 +1,4 @@
-#!/usr/bin/python -u
+#!//etc/welcomebot/bin/python3 -u
 # welcomebot.py
 import asyncio
 import os
